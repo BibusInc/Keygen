@@ -14,9 +14,14 @@ key_length = Label(window, text="Введите длину пароля")
 key_length.pack()
 
 
+#Пердуперждение
+warn = Label(window, text="Пароль сразу копируется в буфер обмена")
+warn.pack()
+
+
 #Получаем входные данные 
 user_input = Entry(window, width=10)
-user_input.pack()
+user_input.pack(pady = 10)
 user_input.focus()
 
 
@@ -24,7 +29,7 @@ user_input.focus()
 final = StringVar()
 final.set('')
 final_key = Entry(window, textvariable=final)
-final_key.pack()
+final_key.pack(pady = 10)
 
 
 password_arr = []
@@ -33,8 +38,7 @@ symbols = []
 
 #Логическая часть
 def Clicked():
-
-
+	final_key.delete(0, 'end')
 	#Переводим входные данные в нужный формат
 	length = int(user_input.get())	
 
@@ -53,8 +57,8 @@ def Clicked():
 	#Выбираем случайные символы из массива 
 	def Random_Symbols():
 
+		secure_random = random.SystemRandom()
 		for i in range (length):
-			secure_random = random.SystemRandom()
 			password_arr.append(secure_random.choice(symbols))
 
 		return(''.join(password_arr))
@@ -62,13 +66,15 @@ def Clicked():
 
 	#Присваиваем пустой переменной парольное значение	
 	password = Random_Symbols()
-	final_key.delete(0, 'end')
 	final.set(password)	
+	window.clipboard_clear()
+	window.clipboard_append(password)
 
 
 #Пишем кнопулю, которая запускает весь цирк
 button = Button(window, text="Генерировать", command = Clicked)
-button.pack()
+button.pack(pady = 10)
+
 
 #Продолжаем цикл окна(чтобы его не украли)
 window.mainloop()
